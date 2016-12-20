@@ -1,5 +1,6 @@
-import re
+import re, os
 import MeCab
+import subprocess
 
 def perser_wiki(filename):
     m = MeCab.Tagger ("mecabrc")
@@ -24,6 +25,18 @@ def perser_wiki(filename):
                 if(c == '動詞'):
                     words.append(tmp[0])
     return words
-filename = '/Users/kishi-lab/mogami/coupus/text/AA/wiki_00'
-words = perser_wiki(filename)
-print (words)
+
+def find_all_files(directory):
+    list = []
+    for root, dirs, files in os.walk(directory):
+        for file_ in files:
+            full_path = os.path.join(root, file_)
+            list.append(full_path)
+    return list
+
+
+dir = '/Users/kishi-lab/mogami/coupus/extracted/AC'
+list = find_all_files(dir)
+for filename in list:
+    words = perser_wiki(filename)
+    print (words)
