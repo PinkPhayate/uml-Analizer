@@ -3,8 +3,9 @@ def test_find_all_files( directory ):
     list = pw.find_all_files( directory )
     print( list )
 def test_parser_wiki(filename):
+    print(type(filename))
     words = pw.parser_wiki(filename)
-    print( words )
+    # print( words )
 def integrstion_test():
     directory = '/Users/kishi-lab/mogami/coupus/extracted/DT/'
     FILE_NAME = 'test-text.txt'
@@ -12,6 +13,7 @@ def integrstion_test():
     list = pw.find_all_files( directory )
     for filename in list:
         print( filename )
+        filename = filename.encode('utf-8')
         f = open( FILE_NAME, 'a' )
         words = pw.parser_wiki(filename)
         f.write(words)
@@ -21,4 +23,4 @@ if __name__ == "__main__":
     # test_find_all_files( directory )
     filename = '/Users/kishi-lab/mogami/coupus/extracted/DT/wiki_99'
     test_parser_wiki( filename )
-    # integrstion_test()
+    integrstion_test()

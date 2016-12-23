@@ -22,6 +22,7 @@ def get_words(l):
 
 def parser_wiki(filename):
     m = MeCab.Tagger ("mecabrc")
+    m.parse('')
     # perse wiki page
     f = open(filename)
     word_list = ''
@@ -36,23 +37,15 @@ def parser_wiki(filename):
             pass
         else:
             # parser via mecab
-            l = m.parse(line)
+            # l = m.parse(line)
 
-            words = get_words(l)
-            # print (words)
-            word_list += words
-
-
-                # save list
-                # words.append( tmp[0] )
-    '''
-                # 品詞を区別して抽出
-                c = tmp[1]
-                if(c == '名詞'):
-                    words.append(tmp[0])
-                if(c == '動詞'):
-                    words.append(tmp[0])
-    '''
+            node = m.parseToNode(line)
+            while node:
+                # print (node.surface, node.feature)
+                pos = node.feature.split(",")[0]
+                if pos != '記号':
+                    word_list += node.surface + ' '
+                node = node.next
     return word_list
 
 def find_all_files(directory):
