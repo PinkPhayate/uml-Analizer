@@ -4,12 +4,27 @@ import MeCab
 import word2vec
 
 FILE_NAME = 'out.txt'
+def get_words(l):
+    print( type(l) )
+    words = ''
+    for word in l:
+        # print( word )
+        tmp = word.split(',')
+        tmp = tmp[0].split('\t')
+        # if class of word is signature, removed
+        if len(tmp) > 1:
+            c = tmp[1]
+            if(c != '記号'):
+                # save textfile
+                print( tmp[0] )
+                words += tmp[0] + ' '
+    return words
 
 def parser_wiki(filename):
     m = MeCab.Tagger ("mecabrc")
     # perse wiki page
     f = open(filename)
-    words = []
+    word_list = ''
     for line in f.readlines():
         # remove tag
         if re.match('^<doc',line):
@@ -21,20 +36,24 @@ def parser_wiki(filename):
             pass
         else:
             # parser via mecab
-            word = m.parse(line)
-            tmp = word.split(',')
-            tmp = tmp[0].split('\t')
-            if len(tmp) > 1:
-                words.append( tmp[0] )
-'''
+            l = m.parse(line)
+
+            words = get_words(l)
+            # print (words)
+            word_list += words
+
+
+                # save list
+                # words.append( tmp[0] )
+    '''
                 # 品詞を区別して抽出
                 c = tmp[1]
                 if(c == '名詞'):
                     words.append(tmp[0])
                 if(c == '動詞'):
                     words.append(tmp[0])
-'''
-    return words
+    '''
+    return word_list
 
 def find_all_files(directory):
     # get file name in the directory recursively
@@ -45,14 +64,19 @@ def find_all_files(directory):
             list.append(full_path)
     return list
 
+if __name__ == "__main__":
 
-dir = '/Users/kishi-lab/mogami/coupus/extracted/AC'
-# get list of all file
-list = find_all_files(dir)
-f = open( FILE_NAME, 'a')
-for filename in list:
-    if re.match('^wiki_', filename):
-        words = parser_wiki(filename)
-        f.write(words)
-f.close()
-word2vec.create_model( FILE_NAME )
+    dir = '/Users/kishi-lab/mogami/coupus/extracted/'
+    # get list of all file
+    list = find_all_files(dir)
+    f = open( FILE_NAME, 'a')
+    for filename in list:
+        print( filename )
+        if re.match('^wiki_', filename):
+            # logging
+            print(filename);
+            # get text wakatied
+            words = parser_wiki(filename)
+            f.write(words)
+    f.close()
+    word2vec.create_model( FILE_NAME )
