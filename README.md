@@ -10,7 +10,8 @@ you operate just command below.
 
 
 ### How To Use
-Python'''
+
+'''Python
 	model = gensim.models.Word2Vec.load('sample.model')
 	model.similarity('ピカチュウ','コラッタ')
 '''

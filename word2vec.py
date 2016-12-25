@@ -1,6 +1,10 @@
 # -*- coding: utf-8 -*-
 from gensim.models import word2vec
 import logging
+import sys
+# -*- coding: utf-8 -*-
+import gensim
+import sys
 
 def create_model(wakatigaki):
     # Word2Vecの学習に使用する分かち書き済みのテキストファイルの準備
@@ -16,7 +20,13 @@ def create_model(wakatigaki):
     # 学習結果を出力する
     model.save("sample.model")
 
-'''
-類似度を算出するメソッド
-model.similarity('word1', 'word2')
-'''
+# put command line args to word
+args = sys.argv
+word1 = args[1]
+word2 = args[2]
+
+# create model
+model = gensim.models.Word2Vec.load('sample.model')
+
+# cur
+model.similarity(word1,word2)
