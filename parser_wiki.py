@@ -1,7 +1,7 @@
 #coding:utf-8
 import re, os
 import MeCab
-import word2vec
+# import word2vec
 
 FILE_NAME = 'out.txt'
 def get_words(l):
@@ -62,14 +62,16 @@ if __name__ == "__main__":
     dir = '/Users/kishi-lab/mogami/coupus/extracted/'
     # get list of all file
     list = find_all_files(dir)
-    f = open( FILE_NAME, 'a')
     for filename in list:
-        print( filename )
-        if re.match('^wiki_', filename):
+        array = filename.split('/')
+        if re.match('^wiki_', array[-1]):
+            f = open( FILE_NAME, 'a' )
             # logging
+            filename = filename.encode('utf-8')
             print(filename);
+
             # get text wakatied
             words = parser_wiki(filename)
             f.write(words)
-    f.close()
-    word2vec.create_model( FILE_NAME )
+            f.close()
+    # word2vec.create_model( FILE_NAME )

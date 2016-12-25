@@ -1,0 +1,5 @@
+out.txt
+test-text.text
+*.model
+sample.model.syn0.npy
+sample.model.syn1.npy
