@@ -20,13 +20,20 @@ def create_model(wakatigaki):
     # 学習結果を出力する
     model.save("sample.model")
 
-# put command line args to word
-args = sys.argv
-word1 = args[1]
-word2 = args[2]
-
+def calc_sim(word1, word2):
+	model.similarity(word1,word2)
 # create model
 model = gensim.models.Word2Vec.load('sample.model')
 
-# cur
-model.similarity(word1,word2)
+if __name__ == '__main__':
+	print("if you'd like to quit, put quit to word1")
+	while True:
+		print("word1: ")
+		word1 = sys.stdin.read()
+		if word1 == 'QUIT':
+			break
+		print("word2: ")
+		word2 = sys.stdin.read()
+
+		# calcurate similarity
+		model.similarity(word1,word2)
