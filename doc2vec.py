@@ -4,25 +4,11 @@ import MeCab
 # import word2vec
 
 FILE_NAME = 'out.txt'
-def get_words(l):
-    print( type(l) )
-    words = ''
-    for word in l:
-        # print( word )
-        tmp = word.split(',')
-        tmp = tmp[0].split('\t')
-        # if class of word is signature, removed
-        if len(tmp) > 1:
-            c = tmp[1]
-            if(c != '記号'):
-                # save textfile
-                print( tmp[0] )
-                words += tmp[0] + ' '
-    return words
 
 def parser_wiki(filename):
     m = MeCab.Tagger ("mecabrc")
     m.parse('')
+    doc = []
     # perse wiki page
     f = open(filename)
     word_list = ''
@@ -44,9 +30,10 @@ def parser_wiki(filename):
                 # print (node.surface, node.feature)
                 pos = node.feature.split(",")[0]
                 if pos != '記号':
-                    word_list += node.surface + ' '
+                    # word_list += node.surface + ' '
+                    doc.append( node.surface )
                 node = node.next
-    return word_list
+    return doc
 
 
 def find_all_files(directory):
@@ -63,6 +50,7 @@ if __name__ == "__main__":
     dir = '/Users/kishi-lab/mogami/coupus/extracted/'
     # get list of all file
     list = find_all_files(dir)
+    training_docs = []
     for filename in list:
         array = filename.split('/')
         if re.match('^wiki_', array[-1]):
@@ -72,7 +60,12 @@ if __name__ == "__main__":
             print(filename);
 
             # get text wakatied
-            words = parser_wiki(filename)
-            f.write(words)
+            doc = parser_wiki(filename)
+            sent = TaggedDocument(words= doc, tags=['d4'])
+            # put document array
+            training_docs.append( sent )
+            # write document
+            f.write(doc)
             f.close()
+
     # word2vec.create_model( FILE_NAME )
